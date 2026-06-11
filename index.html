@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECHAPPE CAR - Location de Voitures à Marrakech</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     
     <style>
         body { font-family: 'Montserrat', 'Cairo', sans-serif; }
@@ -17,646 +19,801 @@
         .gold-border { border-color: rgba(212, 175, 55, 1); }
         .bg-gold { background-color: #D4AF37; }
         .text-gold { color: #D4AF37; }
-        .glass-nav { backdrop-filter: blur(12px); background-color: rgba(15, 23, 42, 0.85); }
-        .glass-card { backdrop-filter: blur(16px); background-color: rgba(30, 41, 59, 0.7); }
+        html { scroll-behavior: smooth; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 antialiased overflow-x-hidden selection:bg-amber-500 selection:text-slate-900">
+<body class="bg-stone-950 text-stone-100 min-h-screen flex flex-col antialiased">
 
-    <div class="bg-slate-950 border-b border-slate-800 text-xs py-2 px-4 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 z-50 relative">
-        <div class="flex flex-wrap gap-4 items-center justify-center text-slate-400">
-            <span class="flex items-center gap-1.5 hover:text-amber-500 transition"><i class="fa-solid fa-location-dot text-amber-500"></i> <span data-cms="agency-address">NR 861, Marrakech 2B, Marrakech 40000</span></span>
-            <span class="flex items-center gap-1.5 hover:text-amber-500 transition"><i class="fa-solid fa-phone text-amber-500"></i> <span data-cms="agency-phone">+212 655-386956</span></span>
-            <span class="flex items-center gap-1.5 hover:text-amber-500 transition"><i class="fa-solid fa-envelope text-amber-500"></i> <span data-cms="agency-email">zakariasaber131@gmail.com</span></span>
-        </div>
-        <div class="flex items-center gap-3">
-            <div class="relative inline-block text-left" id="langDropdown">
-                <button onclick="toggleLangMenu()" class="flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1 text-xs font-medium hover:bg-slate-700 transition">
-                    <span id="currentFlag">🇫🇷</span> <span id="currentLangLabel">Français</span> <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-                </button>
-                <div id="langMenu" class="hidden absolute right-0 mt-2 w-36 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-                    <button onclick="changeLanguage('fr')" class="w-full text-left px-4 py-2 hover:bg-amber-500 hover:text-slate-950 flex items-center gap-2 text-xs font-semibold"><span>🇫🇷</span> Français</button>
-                    <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 hover:bg-amber-500 hover:text-slate-950 flex items-center gap-2 text-xs font-semibold"><span>🇬🇧</span> English</button>
-                    <button onclick="changeLanguage('ar')" class="w-full text-left px-4 py-2 hover:bg-amber-500 hover:text-slate-950 flex items-center gap-2 text-xs font-semibold"><span>🇲🇦</span> العربية</button>
-                </div>
+    <!-- TOPBAR -->
+    <div class="bg-stone-900 border-b border-stone-800 text-xs py-2 px-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex flex-wrap items-center gap-4 text-stone-400">
+                <a href="tel:+212618369599" class="hover:text-gold transition flex items-center gap-1">
+                    <i class="fas fa-phone text-gold"></i> +212 618-369599
+                </a>
+                <a href="tel:+212670188613" class="hover:text-gold transition flex items-center gap-1">
+                    <i class="fas fa-phone text-gold"></i> +212 670-188613
+                </a>
+                <span class="hidden sm:inline flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt text-gold"></i> <span data-key="topbar_city">Marrakech, Maroc</span>
+                </span>
+            </div>
+            <div class="relative inline-block text-left">
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-stone-800 text-stone-200 border border-stone-700 rounded px-2 py-1 cursor-pointer focus:outline-none focus:border-gold text-xs">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="es">Español</option>
+                    <option value="de">Deutsch</option>
+                </select>
             </div>
         </div>
     </div>
 
-    <nav class="glass-nav sticky top-0 border-b border-slate-800/60 h-20 px-4 sm:px-8 flex items-center justify-between z-40 transition-all duration-300">
-        <div class="flex items-center gap-3">
-            <div class="w-11 h-11 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20">
-                <i class="fa-solid fa-car-side text-slate-950 text-xl"></i>
-            </div>
-            <div>
-                <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">ECHAPPE <span class="text-amber-500">CAR</span></span>
-                <p class="text-[9px] text-slate-400 tracking-widest uppercase" id="nav-subtitle">Premium Rental</p>
-            </div>
-        </div>
-
-        <ul class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-300">
-            <li><a href="#fleet" class="hover:text-amber-500 transition-colors py-2 relative group" id="lnk-fleet">Notre Flotte<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span></a></li>
-            <li><a href="#how-it-works" class="hover:text-amber-500 transition-colors py-2 relative group" id="lnk-how">Comment réserver<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span></a></li>
-            <li><a href="#advantages" class="hover:text-amber-500 transition-colors py-2 relative group" id="lnk-adv">Avantages<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span></a></li>
-            <li><a href="#contact" class="hover:text-amber-500 transition-colors py-2 relative group" id="lnk-contact">Contact<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span></a></li>
-        </ul>
-
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-                <a href="https://facebook.com/ECHAPPECAR" target="_blank" class="w-9 h-9 rounded-full bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-[#1877F2] hover:scale-110 shadow-md transition-all"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://instagram.com/echappecar" target="_blank" class="w-9 h-9 rounded-full bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-white hover:scale-110 shadow-md transition-all style-ig" style="background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)"><i class="fa-brands fa-instagram"></i></a>
-            </div>
-            <button onclick="scrollToBooking()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/10 active:scale-95 transition-all" id="btn-nav-book">Réserver</button>
-        </div>
-    </nav>
-
-    <header class="relative w-full min-h-[85vh] flex items-center px-4 sm:px-8 py-20 overflow-hidden bg-slate-950">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=80" alt="Luxury Car" class="w-full height-full object-cover object-center opacity-45 scale-105 transform transition duration-[10s]">
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-        </div>
-
-        <div class="max-w-3xl z-10 relative">
-            <button onclick="openGuaranteeModal()" class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 text-amber-400 text-xs font-semibold mb-6 hover:bg-amber-500/20 active:scale-95 transition-all">
-                <i class="fa-solid fa-shield-halved"></i> <span id="hero-badge">🛡️ Garantie ECHAPPE CAR</span>
-            </button>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6" id="hero-title">
-                Location de voitures à <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300">Marrakech</span>
-            </h1>
-            <p class="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed mb-10" id="hero-desc">
-                Des tarifs transparents, une livraison à l'aéroport Menara et une réservation rapide via WhatsApp.
-            </p>
-            <div class="flex flex-wrap gap-4 items-center mb-12">
-                <button onclick="scrollToFleet()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-7 py-4 rounded-xl shadow-xl shadow-amber-500/10 flex items-center gap-2 active:scale-95 transition-all" id="hero-btn-primary">Voir les voitures <i class="fa-solid fa-arrow-right text-xs"></i></button>
-                <button onclick="scrollToHow()" class="bg-slate-800/80 border border-slate-700 text-white font-medium px-7 py-4 rounded-xl hover:bg-slate-700/80 transition-all" id="hero-btn-secondary">Comment réserver</button>
-            </div>
-
-            <div class="grid grid-cols-3 gap-6 max-w-md border-t border-slate-800/80 pt-8 text-center sm:text-left">
-                <div>
-                    <span class="block text-3xl font-extrabold text-white">5</span>
-                    <span class="text-xs text-slate-400" id="stat-cars">Voitures</span>
+    <!-- NAVBAR -->
+    <header class="bg-stone-950/90 backdrop-blur-md border-b border-stone-900 sticky top-10 z-40 py-4 px-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center font-bold text-black text-xl tracking-tighter shadow-lg group-hover:scale-105 transition-transform">
+                    EC
                 </div>
-                <div>
-                    <span class="block text-3xl font-extrabold text-amber-500">250 DH</span>
-                    <span class="text-xs text-slate-400" id="stat-price">À partir de</span>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg tracking-wider text-white group-hover:text-gold transition">ECHAPPE CAR</span>
+                    <span class="text-[9px] text-stone-500 uppercase tracking-widest -mt-1">Premium Rental</span>
                 </div>
-                <div>
-                    <span class="block text-3xl font-extrabold text-white">24/7</span>
-                    <span class="text-xs text-slate-400" id="stat-avail">Disponible</span>
-                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-300">
+                <a href="#" data-key="nav_home" class="hover:text-gold transition">Accueil</a>
+                <a href="#fleet" data-key="nav_fleet" class="hover:text-gold transition">Notre Flotte</a>
+                <a href="#how-it-works" data-key="nav_how" class="hover:text-gold transition">Comment Réserver</a>
+                <a href="#reviews" data-key="nav_reviews" class="hover:text-gold transition">Avis</a>
+                <a href="#why-us" data-key="nav_why" class="hover:text-gold transition">Pourquoi Nous</a>
+                <a href="#contact" data-key="nav_contact" class="hover:text-gold transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full border border-stone-800 flex items-center justify-center text-stone-400 hover:text-gold hover:border-gold transition text-sm">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1Bs2MogFTQ/" target="_blank" class="w-8 h-8 rounded-full border border-stone-800 flex items-center justify-center text-stone-400 hover:text-gold hover:border-gold transition text-sm">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#fleet" data-key="btn_book_now" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold text-xs px-4 py-2 rounded shadow-lg hover:brightness-110 transition hidden sm:block">
+                    Réserver
+                </a>
             </div>
         </div>
     </header>
 
-    <section class="px-4 sm:px-8 -mt-10 relative z-30 max-w-6xl mx-auto">
-        <div class="glass-card border border-slate-700/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl shadow-slate-950/50 gold-glow">
-            <form onsubmit="handleBookingForm(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 items-end">
-                <div class="w-full">
-                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2" id="lbl-pickup">Lieu de départ</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <select id="pickup_location" onchange="toggleCustomLocation('pickup')" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-amber-500 transition appearance-none cursor-pointer">
-                            <option value="Aéroport Ménara Marrakech">Aéroport Ménara Marrakech</option>
-                            <option value="Marrakech Médina">Marrakech Médina</option>
-                            <option value="Marrakech Guéliz">Marrakech Guéliz</option>
-                            <option value="Gare">Gare</option>
-                            <option value="Centre Ville">Centre Ville</option>
-                            <option value="Agdal Centre Ville">Agdal Centre Ville</option>
-                            <option value="Autre" id="opt-other-1">Autre</option>
-                        </select>
-                    </div>
-                    <input type="text" id="custom_pickup" placeholder="Adresse précise..." class="hidden mt-2 w-full bg-slate-950 border border-slate-700 rounded-xl py-2 px-4 text-xs text-white focus:outline-none focus:border-amber-500">
+    <section class="relative bg-gradient-to-b from-stone-900 to-stone-950 py-16 px-4 overflow-hidden border-b border-stone-900">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.08),transparent_50%)]"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            
+            <button onclick="openBadgeModal()" class="inline-flex items-center gap-2 bg-stone-800/80 border border-stone-700 rounded-full px-3 py-1 text-xs text-stone-300 mb-6 hover:border-gold transition shadow-md">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                <span data-key="hero_badge">Livraison gratuite à l'Aéroport de Marrakech</span>
+                <i class="fas fa-chevron-right text-[10px] text-stone-500"></i>
+            </button>
+
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
+                <span data-key="hero_title_1">Échappez-vous sur les routes du Maroc avec</span> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500">ECHAPPE CAR</span>
+            </h1>
+            
+            <p data-key="hero_subtitle" class="text-stone-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                Louez des véhicules récents, parfaitement entretenus et au meilleur prix à Marrakech. Service premium 24h/7j, transparence totale et sans frais cachés.
+            </p>
+
+            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto border-t border-stone-800 pt-8 text-center">
+                <div>
+                    <div class="text-2xl sm:text-3xl font-bold text-white">25+</div>
+                    <div data-key="stat_vehicles" class="text-xs text-stone-500 mt-1">Véhicules récents</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-bold text-gold">20€</div>
+                    <div data-key="stat_price" class="text-xs text-stone-500 mt-1">À partir de / jour</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-bold text-white">24/7</div>
+                    <div data-key="stat_support" class="text-xs text-stone-500 mt-1">Support Client</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto w-full px-4 -mt-8 relative z-30">
+        <div class="bg-stone-900 border border-stone-800 rounded-xl p-6 shadow-2xl gold-glow">
+            <form id="bookingForm" onsubmit="handleBookingForm(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div class="flex flex-col gap-2">
+                    <label data-key="label_pickup_loc" class="text-xs font-semibold text-stone-400 flex items-center gap-1.5">
+                        <i class="fas fa-map-marker-alt text-gold"></i> Lieu de prise en charge
+                    </label>
+                    <select id="pickup_location" onchange="toggleCustomLocationInput('pickup')" class="bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
+                        <option value="Aéroport Marrakech-Ménara" data-key="opt_ap">Aéroport Marrakech-Ménara</option>
+                        <option value="Guéliz" data-key="opt_gueliz">Guéliz</option>
+                        <option value="Médina" data-key="opt_medina">Médina</option>
+                        <option value="Centre-ville" data-key="opt_center">Centre-ville</option>
+                        <option value="Gare Ferroviaire" data-key="opt_station">Gare Ferroviaire</option>
+                        <option value="Autre" data-key="opt_other">Autre (À préciser)...</option>
+                    </select>
+                    <input type="text" id="custom_pickup" placeholder="Spécifiez le lieu" class="hidden mt-2 bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
                 </div>
 
-                <div class="w-full">
-                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2" id="lbl-start">Date de départ</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-calendar-days absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="date" id="start_date" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                    </div>
+                <div class="flex flex-col gap-2">
+                    <label data-key="label_return_loc" class="text-xs font-semibold text-stone-400 flex items-center gap-1.5">
+                        <i class="fas fa-undo-alt text-gold"></i> Lieu de restitution
+                    </label>
+                    <select id="return_location" onchange="toggleCustomLocationInput('return')" class="bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
+                        <option value="Aéroport Marrakech-Ménara" data-key="opt_ap">Aéroport Marrakech-Ménara</option>
+                        <option value="Guéliz" data-key="opt_gueliz">Guéliz</option>
+                        <option value="Médina" data-key="opt_medina">Médina</option>
+                        <option value="Centre-ville" data-key="opt_center">Centre-ville</option>
+                        <option value="Gare Ferroviaire" data-key="opt_station">Gare Ferroviaire</option>
+                        <option value="Autre" data-key="opt_other">Autre (À préciser)...</option>
+                    </select>
+                    <input type="text" id="custom_return" placeholder="Spécifiez le lieu" class="hidden mt-2 bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
                 </div>
 
-                <div class="w-full">
-                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2" id="lbl-return">Lieu de retour</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <select id="return_location" onchange="toggleCustomLocation('return')" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-amber-500 transition appearance-none cursor-pointer">
-                            <option value="Aéroport Ménara Marrakech">Aéroport Ménara Marrakech</option>
-                            <option value="Marrakech Médina">Marrakech Médina</option>
-                            <option value="Marrakech Guéliz">Marrakech Guéliz</option>
-                            <option value="Gare">Gare</option>
-                            <option value="Centre Ville">Centre Ville</option>
-                            <option value="Agdal Centre Ville">Agdal Centre Ville</option>
-                            <option value="Autre" id="opt-other-2">Autre</option>
-                        </select>
-                    </div>
-                    <input type="text" id="custom_return" placeholder="Adresse précise..." class="hidden mt-2 w-full bg-slate-950 border border-slate-700 rounded-xl py-2 px-4 text-xs text-white focus:outline-none focus:border-amber-500">
+                <div class="flex flex-col gap-2">
+                    <label data-key="label_start_date" class="text-xs font-semibold text-stone-400 flex items-center gap-1.5">
+                        <i class="fas fa-calendar-alt text-gold"></i> Date de début
+                    </label>
+                    <input type="date" id="start_date" required class="bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
                 </div>
 
-                <div class="w-full">
-                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-2" id="lbl-end">Date de retour</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-calendar-days absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="date" id="end_date" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                    </div>
+                <div class="flex flex-col gap-2">
+                    <label data-key="label_end_date" class="text-xs font-semibold text-stone-400 flex items-center gap-1.5">
+                        <i class="fas fa-calendar-check text-gold"></i> Date de fin
+                    </label>
+                    <input type="date" id="end_date" required class="bg-stone-950 border border-stone-800 rounded p-2.5 text-sm text-white focus:outline-none focus:border-gold w-full">
                 </div>
 
-                <button type="button" onclick="scrollToFleet()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 active:scale-95" id="btn-search">
-                    <i class="fa-solid fa-magnifying-glass"></i> Rechercher
-                </button>
+                <div class="md:col-span-4 text-center mt-2">
+                    <p data-key="booking_bar_info" class="text-xs text-stone-500">
+                        * Choisissez vos critères ci-dessus, puis cliquez sur "Réserver" sous le véhicule de votre choix.
+                    </p>
+                </div>
             </form>
         </div>
     </section>
 
-    <section id="fleet" class="py-24 px-4 sm:px-8 max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-            <span class="text-xs font-bold text-amber-500 tracking-widest uppercase bg-amber-500/10 px-4 py-1.5 rounded-full" id="fleet-tag">Notre Flotte</span>
-            <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-3" id="fleet-title-main">Choisissez votre voiture</h2>
-            <div class="w-12 h-1 bg-amber-500 mx-auto rounded-full"></div>
-            <p class="text-slate-400 text-sm max-w-md mx-auto mt-4" id="fleet-desc">
-                Des véhicules entretenus, propres et disponibles à tout moment à Marrakech
+    <main id="fleet" class="max-w-7xl mx-auto px-4 py-20 w-full flex-grow">
+        <div class="text-center mb-12">
+            <h2 data-key="fleet_title" class="text-3xl font-bold tracking-tight mb-4">Notre Flotte de Véhicules</h2>
+            <div class="w-16 h-1 bg-gold mx-auto rounded"></div>
+            <p data-key="fleet_subtitle" class="text-stone-400 text-sm mt-4 max-w-xl mx-auto">
+                Des voitures économiques pour la ville aux SUV familiaux, trouvez le véhicule idéal pour votre séjour.
             </p>
         </div>
 
-        <div id="fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
+        <div id="carsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </main>
 
-        <div class="text-center mt-12">
-            <button id="btn-toggle-fleet" onclick="toggleFleetView()" class="border-2 border-slate-700 hover:border-amber-500 text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-amber-500 hover:text-slate-950 active:scale-95">
-                Voir tout
-            </button>
-        </div>
-    </section>
-
-    <div id="guaranteeModal" class="hidden fixed inset-0 z-[100] items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-        <div class="bg-slate-900 border border-slate-700/60 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative gold-glow transform scale-95 transition-all duration-300">
-            <button onclick="closeGuaranteeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-amber-500/20"><i class="fa-solid fa-shield-halved"></i></div>
-                <h3 class="text-xl font-extrabold text-white" id="modal-g-title">Garantie ECHAPPE CAR</h3>
-            </div>
-
-            <div class="space-y-4 text-sm text-slate-300" id="modal-g-body">
-                </div>
-        </div>
-    </div>
-
-    <div id="bookingModal" class="hidden fixed inset-0 z-[100] items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative transform transition-all duration-300">
-            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
-            
-            <h3 class="text-lg font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-check text-amber-500"></i> <span id="modal-b-title">Confirmer la demande</span></h3>
-            <p class="text-slate-400 text-xs mb-6" id="modal-b-desc">Votre demande va être envoyée directement sur WhatsApp pour finaliser le contrat.</p>
-
-            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-6 space-y-2.5 text-sm">
-                <p class="text-slate-400 text-xs uppercase font-bold tracking-wider" id="modal-b-selected">Véhicule Sélectionné</p>
-                <p id="modal-car-name" class="font-extrabold text-base text-amber-500"></p>
-            </div>
-
-            <button onclick="redirectToWhatsAppFinal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition active:scale-95"><i class="fa-brands fa-whatsapp text-lg"></i> <span id="modal-b-btn">Continuer sur WhatsApp</span></button>
-        </div>
-    </div>
-
-    <section id="how-it-works" class="py-24 bg-slate-950 px-4 sm:px-8">
-        <div class="max-w-6xl mx-auto">
+    <section id="how-it-works" class="bg-stone-900/50 border-t border-b border-stone-900 py-20 px-4">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <span class="text-xs font-bold text-amber-500 tracking-widest uppercase bg-amber-500/10 px-4 py-1.5 rounded-full" id="how-tag">Simple & Rapide</span>
-                <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-3" id="how-title-main">Comment réserver ?</h2>
-                <div class="w-12 h-1 bg-amber-500 mx-auto rounded-full"></div>
-                <p class="text-slate-400 text-sm max-w-md mx-auto mt-4" id="how-desc">Trois étapes simples pour louer votre véhicule en toute tranquillité</p>
+                <h2 data-key="how_title" class="text-3xl font-bold tracking-tight mb-4">Comment ça marche ?</h2>
+                <div class="w-16 h-1 bg-gold mx-auto rounded"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 relative hover:border-slate-700 transition">
-                    <span class="text-5xl font-black text-slate-800 absolute right-6 top-6">01</span>
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 text-lg font-bold mb-6">1</div>
-                    <h4 class="text-lg font-bold mb-2" id="step1-h">Sélection & Date</h4>
-                    <p class="text-slate-400 text-xs leading-relaxed" id="step1-p">Choisissez le modèle idéal et vos dates de location directement ci-dessus.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+                <div class="flex flex-col items-center group">
+                    <div class="w-14 h-14 rounded-full border border-stone-800 bg-stone-950 flex items-center justify-center text-xl text-gold mb-4 group-hover:border-gold transition">
+                        1
+                    </div>
+                    <h3 data-key="how_step1_title" class="font-semibold text-lg mb-2">Sélectionnez & Planifiez</h3>
+                    <p data-key="how_step1_desc" class="text-stone-400 text-sm max-w-xs leading-relaxed">
+                        Choisissez vos dates et lieux de prise en charge directement depuis notre outil intelligent.
+                    </p>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 relative hover:border-slate-700 transition">
-                    <span class="text-5xl font-black text-slate-800 absolute right-6 top-6">02</span>
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 text-lg font-bold mb-6">2</div>
-                    <h4 class="text-lg font-bold mb-2" id="step2-h">Validation WhatsApp</h4>
-                    <p class="text-slate-400 text-xs leading-relaxed" id="step2-p">Cliquez sur réserver pour envoyer votre demande instantanément sur WhatsApp.</p>
+                <div class="flex flex-col items-center group">
+                    <div class="w-14 h-14 rounded-full border border-stone-800 bg-stone-950 flex items-center justify-center text-xl text-gold mb-4 group-hover:border-gold transition">
+                        2
+                    </div>
+                    <h3 data-key="how_step2_title" class="font-semibold text-lg mb-2">Validez via WhatsApp</h3>
+                    <p data-key="how_step2_desc" class="text-stone-400 text-sm max-w-xs leading-relaxed">
+                        Cliquez sur réserver, un agent dédié reçoit votre configuration instantanément pour valider la disponibilité.
+                    </p>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 relative hover:border-slate-700 transition">
-                    <span class="text-5xl font-black text-slate-800 absolute right-6 top-6">03</span>
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 text-lg font-bold mb-6">3</div>
-                    <h4 class="text-lg font-bold mb-2" id="step3-h">Livraison & Départ</h4>
-                    <p class="text-slate-400 text-xs leading-relaxed" id="step3-p">Nous vous livrons la voiture propre à l'endroit choisi. Bon voyage !</p>
+                <div class="flex flex-col items-center group">
+                    <div class="w-14 h-14 rounded-full border border-stone-800 bg-stone-950 flex items-center justify-center text-xl text-gold mb-4 group-hover:border-gold transition">
+                        3
+                    </div>
+                    <h3 data-key="how_step3_title" class="font-semibold text-lg mb-2">Prenez la Route</h3>
+                    <p data-key="how_step3_desc" class="text-stone-400 text-sm max-w-xs leading-relaxed">
+                        Nous vous livrons le véhicule propre et prêt à l'endroit convenu à Marrakech. Bonne route !
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="advantages" class="py-24 px-4 sm:px-8 max-w-6xl mx-auto">
+    <section id="reviews" class="py-20 px-4 max-w-7xl mx-auto w-full">
         <div class="text-center mb-16">
-            <span class="text-xs font-bold text-amber-500 tracking-widest uppercase bg-amber-500/10 px-4 py-1.5 rounded-full" id="adv-tag">Avantages</span>
-            <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-3" id="adv-title-main">Pourquoi nous choisir ?</h2>
-            <div class="w-12 h-1 bg-amber-500 mx-auto rounded-full"></div>
-            <p class="text-slate-400 text-sm max-w-md mx-auto mt-4" id="adv-desc">Le meilleur service de location de voitures à Marrakech</p>
+            <h2 data-key="reviews_title" class="text-3xl font-bold tracking-tight mb-4">Avis de nos clients</h2>
+            <div class="w-16 h-1 bg-gold mx-auto rounded"></div>
+            <p data-key="reviews_subtitle" class="text-stone-400 text-sm mt-4 max-w-xl mx-auto">
+                Découvrez ce que nos clients disent de leur expérience avec ECHAPPE CAR.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-solid fa-tags"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv1-h">Meilleurs Prix</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv1-p">Des tarifs transparents dès 250 DH/jour, sans frais cachés.</p></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg">
+                <div class="flex items-center gap-1 text-amber-400 mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p data-key="review_1_text" class="text-stone-300 text-sm leading-relaxed mb-4">Service rapide, voiture propre et livraison à l'aéroport sans problème. Je recommande vivement.</p>
+                <div class="font-semibold text-white" data-key="review_1_name">Yassine B.</div>
             </div>
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-solid fa-plane-arrival"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv2-h">Livraison Aéroport</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv2-p">Nous vous attendons à l'Aéroport de Marrakech Ménara dès votre arrivée.</p></div>
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg">
+                <div class="flex items-center gap-1 text-amber-400 mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p data-key="review_2_text" class="text-stone-300 text-sm leading-relaxed mb-4">Très bon accueil, prix correct et communication facile sur WhatsApp. Très satisfait.</p>
+                <div class="font-semibold text-white" data-key="review_2_name">Sara M.</div>
             </div>
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-solid fa-sparkles"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv3-h">Véhicules Propres</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv3-p">Voitures parfaitement nettoyées, désinfectées et révisées régulièrement.</p></div>
-            </div>
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-brands fa-whatsapp"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv4-h">Réservation WhatsApp</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv4-p">Réservez en quelques messages, disponible à tout moment.</p></div>
-            </div>
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv5-h">Livraison partout</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv5-p">Médina, Guéliz, Gare, Agdal — nous venons jusqu'à vous.</p></div>
-            </div>
-            <div class="flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-2xl hover:border-amber-500/30 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fa-solid fa-arrow-rotate-left"></i></div>
-                <div><h4 class="font-bold text-sm text-white mb-1" id="adv6-h">Retour flexible</h4><p class="text-slate-400 text-xs leading-relaxed" id="adv6-p">Restituez le véhicule où vous le souhaitez en toute simplicité.</p></div>
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg">
+                <div class="flex items-center gap-1 text-amber-400 mb-4">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p data-key="review_3_text" class="text-stone-300 text-sm leading-relaxed mb-4">Excellent service et voiture en très bon état. Tout était simple et transparent.</p>
+                <div class="font-semibold text-white" data-key="review_3_name">Mohamed A.</div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-24 bg-slate-950 px-4 sm:px-8 border-t border-slate-900">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <span class="text-xs font-bold text-amber-500 tracking-widest uppercase bg-amber-500/10 px-4 py-1.5 rounded-full" id="contact-tag">Contact</span>
-                <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-3" id="contact-title-main">Une question ? Contactez-nous</h2>
-                <div class="w-12 h-1 bg-amber-500 mx-auto rounded-full"></div>
-                <p class="text-slate-400 text-sm max-w-md mx-auto mt-4" id="contact-desc">Notre équipe est disponible 24/7 pour vous aider</p>
-            </div>
+    <section id="why-us" class="py-20 px-4 max-w-7xl mx-auto w-full">
+        <div class="text-center mb-16">
+            <h2 data-key="why_title" class="text-3xl font-bold tracking-tight mb-4">Pourquoi Choisir ECHAPPE CAR ?</h2>
+            <div class="w-16 h-1 bg-gold mx-auto rounded"></div>
+        </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mb-14 text-center">
-                <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl hover:border-amber-500/20 transition">
-                    <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fa-brands fa-whatsapp"></i></div>
-                    <h5 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1" id="c1-lbl">Téléphone / WhatsApp</h5>
-                    <p class="text-white text-sm font-semibold" data-cms="agency-phone">+212 655-386956</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg hover:border-stone-700 transition">
+                <div class="text-2xl text-gold mb-3"><i class="fas fa-tags"></i></div>
+                <h3 data-key="why_feat1_title" class="font-semibold mb-2">Prix Transparents</h3>
+                <p data-key="why_feat1_desc" class="text-stone-400 text-xs leading-relaxed">Aucun frais caché. Ce que vous voyez est exactement ce que vous payez.</p>
+            </div>
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg hover:border-stone-700 transition">
+                <div class="text-2xl text-gold mb-3"><i class="fas fa-shipping-fast"></i></div>
+                <h3 data-key="why_feat2_title" class="font-semibold mb-2">Livraison Flexible</h3>
+                <p data-key="why_feat2_desc" class="text-stone-400 text-xs leading-relaxed">À l'aéroport, à votre hôtel ou riad, nous venons là où vous êtes.</p>
+            </div>
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg hover:border-stone-700 transition">
+                <div class="text-2xl text-gold mb-3"><i class="fas fa-sparkles"></i></div>
+                <h3 data-key="why_feat3_title" class="font-semibold mb-2">Propreté Irréprochable</h3>
+                <p data-key="why_feat3_desc" class="text-stone-400 text-xs leading-relaxed">Chaque véhicule est entièrement désinfecté et lavé avant livraison.</p>
+            </div>
+            <div class="bg-stone-900 border border-stone-800 p-6 rounded-lg hover:border-stone-700 transition">
+                <div class="text-2xl text-gold mb-3"><i class="fas fa-headset"></i></div>
+                <h3 data-key="why_feat4_title" class="font-semibold mb-2">Assistance 24h/7j</h3>
+                <p data-key="why_feat4_desc" class="text-stone-400 text-xs leading-relaxed">Une équipe technique et commerciale à votre écoute de jour comme de nuit.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="bg-stone-900/30 border-t border-stone-900 py-16 px-4 w-full mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col gap-3">
+                <span class="font-bold text-lg text-white tracking-wider">ECHAPPE CAR</span>
+                <p data-key="footer_desc" class="text-stone-500 text-xs leading-relaxed max-w-xs">
+                    Votre partenaire de confiance pour l'exploration de Marrakech et du Maroc dans un confort optimal et en toute sécurité.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 gap-4 text-sm text-stone-400">
+                <div class="flex items-start gap-2">
+                    <i class="fas fa-map-marker-alt text-gold mt-1"></i>
+                    <span>NR 861, Marrakech 2B, Marrakech 40000</span>
                 </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl hover:border-amber-500/20 transition">
-                    <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fa-solid fa-location-dot"></i></div>
-                    <h5 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1" id="c2-lbl">Notre Bureau</h5>
-                    <p class="text-white text-xs font-semibold" data-cms="agency-address">NR 861, Marrakech 2B, Marrakech 40000</p>
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone text-gold"></i>
+                        <a href="tel:+212618369599" class="hover:text-white transition">+212 618-369599</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone text-gold"></i>
+                        <a href="tel:+212670188613" class="hover:text-white transition">+212 670-188613</a>
+                    </div>
                 </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl hover:border-amber-500/20 transition">
-                    <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fa-solid fa-envelope"></i></div>
-                    <h5 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1" id="c3-lbl">Email</h5>
-                    <p class="text-white text-xs font-semibold" data-cms="agency-email">zakariasaber131@gmail.com</p>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-envelope text-gold"></i>
+                    <a href="mailto:contact@echappecar.com" class="hover:text-white transition">contact@echappecar.com</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-location-dot text-gold"></i>
+                    <a href="https://maps.app.goo.gl/YhqJdfS7HodrwySz9" target="_blank" class="hover:text-white transition" data-key="footer_maps">Voir sur Google Maps</a>
                 </div>
             </div>
-
-            <div class="text-center">
-                <a href="https://wa.me/212655386956" target="_blank" class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-base px-8 py-4 rounded-xl shadow-xl shadow-emerald-500/10 transform active:scale-95 transition-all" id="btn-contact-wa">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Discuter sur WhatsApp
+            <div class="flex flex-col items-start md:items-end justify-center gap-3">
+                <a href="https://wa.me/212618369599" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-3 rounded shadow-lg transition text-sm">
+                    <i class="fab fa-whatsapp text-lg"></i> <span data-key="btn_contact_wa_1">Nous Contacter (WhatsApp 1)</span>
+                </a>
+                <a href="https://wa.me/212670188613" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-3 rounded shadow-lg transition text-sm">
+                    <i class="fab fa-whatsapp text-lg"></i> <span data-key="btn_contact_wa_2">Nous Contacter (WhatsApp 2)</span>
                 </a>
             </div>
         </div>
+        <div class="max-w-7xl mx-auto border-t border-stone-900/60 mt-12 pt-6 text-center text-xs text-stone-600">
+            &copy; 2026 ECHAPPE CAR. Tous droits réservés.
+        </div>
     </section>
 
-    <div class="fixed right-5 bottom-6 flex flex-col gap-3.5 z-50">
-        <a href="tel:+212655386956" class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-xl hover:scale-110 active:scale-90 transition transform"><i class="fa-solid fa-phone text-lg"></i></a>
-        <a href="https://wa.me/212655386956" target="_blank" class="w-12 h-12 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center shadow-xl hover:scale-110 active:scale-90 transition transform"><i class="fa-brands fa-whatsapp text-xl"></i></a>
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <a href="mailto:contact@echappecar.com" title="Envoyer un Email" class="w-12 h-12 rounded-full bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-200 flex items-center justify-center shadow-2xl transition hover:scale-110">
+            <i class="fas fa-envelope text-lg"></i>
+        </a>
+        <a href="tel:+212618369599" title="Appeler direct (Ligne 1)" class="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-600 text-black flex items-center justify-center shadow-2xl transition hover:scale-110">
+            <i class="fas fa-phone text-lg"></i>
+        </a>
+        <a href="https://wa.me/212618369599" target="_blank" title="Discuter sur WhatsApp" class="w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-2xl transition hover:scale-110 relative group">
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
+            </span>
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
     </div>
 
-    <footer class="bg-slate-950 border-t border-slate-900 py-8 text-center text-xs text-slate-500 px-4">
-        <p>&copy; 2026 <span class="text-amber-500 font-bold">ECHAPPE CAR</span>. All rights reserved.</p>
-    </footer>
+    <div id="badgeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 hidden">
+        <div class="bg-stone-900 border border-stone-800 rounded-lg max-w-md w-full p-6 relative shadow-2xl">
+            <button onclick="closeBadgeModal()" class="absolute top-4 right-4 text-stone-500 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-amber-500/10 text-gold flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fas fa-plane-arrival"></i>
+                </div>
+                <h3 data-key="md_badge_title" class="text-lg font-bold text-white">Livraison Aéroport Gratuite</h3>
+            </div>
+            <p data-key="md_badge_desc" class="text-stone-400 text-sm leading-relaxed mb-6 text-center">
+                Pour tout séjour d'une durée minimale de 3 jours, ECHAPPE CAR vous remet les clés de votre voiture directement à la sortie de l'Aéroport Marrakech-Ménara sans aucun frais supplémentaire. Un agent vous attendra avec un panneau nominatif.
+            </p>
+            <button onclick="closeBadgeModal()" data-key="md_close" class="w-full bg-stone-800 hover:bg-stone-700 text-white py-2 rounded text-sm transition">
+                Fermer
+            </button>
+        </div>
+    </div>
+
+    <div id="bookingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 hidden">
+        <div class="bg-stone-900 border border-stone-800 rounded-xl max-w-lg w-full p-6 relative shadow-2xl">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-stone-500 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="mb-4">
+                <span data-key="md_book_summary" class="text-[10px] uppercase tracking-widest text-gold font-bold">Résumé de la sélection</span>
+                <h3 id="modalCarName" class="text-2xl font-bold text-white mt-1">Nom de la Voiture</h3>
+                <p id="modalCarPrice" class="text-stone-400 text-sm font-semibold mt-0.5">00 € / Jour</p>
+            </div>
+            <div class="border-t border-b border-stone-800 py-4 my-4">
+                <span data-key="md_book_included" class="text-xs font-bold text-stone-300 block mb-3 uppercase tracking-wider">Ce qui est inclus gratuitement :</span>
+                <div class="grid grid-cols-2 gap-2 text-xs text-stone-400">
+                    <div class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> <span data-key="inc_ac">Climatisation fonctionnelle</span></div>
+                    <div class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> <span data-key="inc_ins">Assurance tous risques</span></div>
+                    <div class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> <span data-key="inc_km">Kilométrage illimité</span></div>
+                    <div class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> <span data-key="inc_24">Assistance technique 24/7</span></div>
+                </div>
+            </div>
+            <div class="bg-stone-950 p-3 rounded border border-stone-800 text-xs text-stone-400 mb-6 flex flex-col gap-1.5">
+                <div><strong data-key="label_pickup_loc">Lieu de prise en charge</strong> : <span id="modalPickupText" class="text-white"></span></div>
+                <div><strong data-key="label_return_loc">Lieu de restitution</strong> : <span id="modalReturnText" class="text-white"></span></div>
+                <div><strong data-key="md_dates">Dates de location</strong> : <span id="modalDatesText" class="text-white"></span></div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <button onclick="redirectToWhatsAppFinal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded flex items-center justify-center gap-2 transition shadow-lg">
+                    <i class="fab fa-whatsapp text-lg"></i> <span data-key="btn_confirm_wa">Réserver sur WhatsApp</span>
+                </button>
+                <button onclick="closeBookingModal()" data-key="md_cancel" class="w-full bg-stone-800 hover:bg-stone-700 text-stone-300 py-2 rounded text-xs transition">
+                    Modifier les dates / Annuler
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="voirToutModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 hidden">
+        <div class="bg-stone-900 border border-stone-800 rounded-xl max-w-xl w-full p-6 relative shadow-2xl overflow-y-auto max-h-[90vh] no-scrollbar">
+            <button onclick="closeVoirToutModal()" class="absolute top-4 right-4 text-stone-500 hover:text-white transition">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            
+            <div class="mb-6 border-b border-stone-800 pb-3">
+                <h3 id="voirToutCarName" class="text-2xl font-bold text-white tracking-wide">Car Name</h3>
+                <p data-key="vt_modal_subtitle" class="text-xs text-stone-400 mt-1">Garanties de confiance et transparence totale ECHAPPE CAR</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-stone-950 p-4 rounded-lg border border-stone-800/80">
+                    <h4 data-key="vt_sec1_title" class="font-bold text-sm text-gold tracking-wide uppercase mb-4 flex items-center gap-2">
+                        <i class="fas fa-gift"></i> Vous obtenez gratuitement
+                    </h4>
+                    <ul class="flex flex-col gap-3 text-xs text-stone-300">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec1_item1">Véhicule climatisé et propre</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec1_item2">Kilométrage illimité</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-check-circle text-emerald-500 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec1_item3">Assurance de base</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-stone-950 p-4 rounded-lg border border-stone-800/80">
+                    <h4 data-key="vt_sec2_title" class="font-bold text-sm text-amber-500 tracking-wide uppercase mb-4 flex items-center gap-2">
+                        <i class="fas fa-clipboard-check"></i> Votre réservation comprend
+                    </h4>
+                    <ul class="flex flex-col gap-3 text-xs text-stone-300">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item1">Annulation gratuite avant 48h</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item2">Modifications Gratuites</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item3">Protection contre le vol</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item4">Rachat de franchise</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item5">Taxes locales incluses</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-shield text-amber-400 mt-0.5 shrink-0"></i>
+                            <span data-key="vt_sec2_item6">Aucuns frais de carte de crédit</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button onclick="closeVoirToutModal()" data-key="md_close" class="w-full bg-stone-800 hover:bg-stone-700 text-white font-medium py-2.5 rounded text-xs transition">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        let currentLanguage = 'fr';
-        let showAllCars = false;
-        let selectedCar = null;
-
-        // VEHICLES STORAGE DATA ARRAY
         const CARS = [
-            { id: 1, name: "Dacia Logan", category: "Économique, Diesel", price: 250, image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=500&q=80", popular: true },
-            { id: 2, name: "Dacia Sandero Stepway", category: "Citadine, Diesel", price: 300, image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=500&q=80", popular: true },
-            { id: 3, name: "Renault Clio 5", category: "Citadine, Diesel", price: 350, image: "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=500&q=80", popular: false },
-            { id: 4, name: "Hyundai i20", category: "Compacte, Essence/Diesel", price: 350, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=500&q=80", popular: false },
-            { id: 5, name: "Kia Picanto", category: "Mini Citadine, Essence", price: 250, image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80", popular: false }
+            { id: 1, name: "Dacia Logan", price: 20, type: "Économique", trans: "Manuelle", fuel: "Diesel", doors: 5, popular: true, img: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=500&auto=format&fit=crop&q=60" },
+            { id: 2, name: "Dacia Sandero Stepway", price: 25, type: "Citadine", trans: "Manuelle", fuel: "Diesel", doors: 5, popular: false, img: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500&auto=format&fit=crop&q=60" },
+            { id: 3, name: "Renault Clio 5", price: 30, type: "Compacte", trans: "Manuelle", fuel: "Diesel", doors: 5, popular: true, img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=500&auto=format&fit=crop&q=60" },
+            { id: 4, name: "Hyundai i20", price: 30, type: "Citadine", trans: "Automatique", fuel: "Essence", doors: 5, popular: false, img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&auto=format&fit=crop&q=60" },
+            { id: 5, name: "Kia Sportage", price: 60, type: "SUV Familial", trans: "Automatique", fuel: "Diesel", doors: 5, popular: true, img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500&auto=format&fit=crop&q=60" },
+            { id: 6, name: "Range Rover Evoque", price: 90, type: "Luxe / SUV", trans: "Automatique", fuel: "Diesel", doors: 5, popular: false, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=500&auto=format&fit=crop&q=60" }
         ];
 
-        // LOCALIZED TRANSLATIONS ENGINE
-        const TRANSLATIONS = {
+        const TRANS = {
             fr: {
-                subtitle: "Premium Rental",
-                lnkFleet: "Notre Flotte", lnkHow: "Comment réserver", lnkAdv: "Avantages", lnkContact: "Contact",
-                btnNavBook: "Réserver", heroBadge: "🛡️ Garantie ECHAPPE CAR",
-                heroTitle: "Location de voitures à <br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300'>Marrakech</span>",
-                heroDesc: "Des tarifs transparents, une livraison à l'aéroport Menara et une réservation rapide via WhatsApp.",
-                heroBtnPrimary: "Voir les voitures <i class='fa-solid fa-arrow-right text-xs'></i>", heroBtnSecondary: "Comment réserver",
-                statCars: "Voitures", statPrice: "À partir de", statAvail: "Disponible",
-                lblPickup: "Lieu de départ", lblStart: "Date de départ", lblReturn: "Lieu de retour", lblEnd: "Date de retour",
-                btnSearch: "<i class='fa-solid fa-magnifying-glass'></i> Rechercher",
-                fleetTag: "Notre Flotte", fleetTitleMain: "Choisissez votre voiture",
-                fleetDesc: "Des véhicules entretenus, propres et disponibles à tout moment à Marrakech",
-                howTag: "Simple & Rapide", howTitleMain: "Comment réserver ?",
-                howDesc: "Trois étapes simples pour louer votre véhicule en toute tranquillité",
-                step1H: "Sélection & Date", step1P: "Choisissez le modèle idéal et vos dates de location directement ci-dessus.",
-                step2H: "Validation WhatsApp", step2P: "Cliquez sur réserver pour envoyer votre demande instantanément sur WhatsApp.",
-                step3H: "Livraison & Départ", step3P: "Nous vous livrons la voiture propre à l'endroit choisi. Bon voyage !",
-                advTag: "Avantages", advTitleMain: "Pourquoi nous choisir ?",
-                advDesc: "Le meilleur service de location de voitures à Marrakech",
-                adv1H: "Meilleurs Prix", adv1P: "Des tarifs transparents dès 250 DH/jour, sans frais cachés.",
-                adv2H: "Livraison Aéroport", adv2P: "Nous vous attendons à l'Aéroport de Marrakech Ménara dès votre arrivée.",
-                adv3H: "Véحicules Propres", adv3P: "Voitures parfaitement nettoyées, désinfectées et révisées régulièrement.",
-                adv4H: "Réservation WhatsApp", adv4P: "Réservez en quelques messages, disponible à tout moment.",
-                adv5H: "Livraison partout", adv5P: "Médina, Guéliz, Gare, Agdal — nous venons jusqu'à vous.",
-                adv6H: "Retour flexible", adv6P: "Restituez le véhicule où vous le souhaitez en toute simplicité.",
-                contactTag: "Contact", contactTitleMain: "Une question ? Contactez-nous",
-                contactDesc: "Notre équipe est disponible 24/7 pour vous aider",
-                c1Lbl: "Téléphone / WhatsApp", c2Lbl: "Notre Bureau", c3Lbl: "Email",
-                btnContactWa: "<i class='fa-brands fa-whatsapp text-xl'></i> Discuter sur WhatsApp",
-                btnViewAll: "Voir tout", btnViewLess: "Voir moins",
-                lblDay: "jour", badgePopular: "Populaire", btnBookNow: "Réserver", optOther: "Autre",
-                modalGTitle: "Garantie ECHAPPE CAR",
-                modalGBody: `<p><strong>✓ Kilométrage Illimité:</strong> Profitez de votre séjour sans vous soucier des distances.</p>
-                             <p><strong>✓ Assurance Tous Risques:</strong> Roulez en toute sérénité avec notre couverture complète.</p>
-                             <p><strong>✓ Aucun Frais Caché:</strong> Le prix convenu est le prix que vous payez à la livraison.</p>
-                             <p><strong>✓ Assistance 24h/7j:</strong> Une équipe dédiée pour vous accompagner à chaque instant.</p>`,
-                modalBTitle: "Confirmer la demande", modalBDesc: "Votre demande va être envoyée directement sur WhatsApp pour finaliser le contrat.",
-                modalBSelected: "Véhicule Sélectionné", modalBBtn: "Continuer sur WhatsApp"
+                nav_home: "Accueil", nav_fleet: "Notre Flotte", nav_how: "Comment Réserver", nav_reviews: "Avis", nav_why: "Pourquoi Nous", nav_contact: "Contact",
+                btn_book_now: "Réserver", hero_badge: "Livraison gratuite à l'Aéroport de Marrakech", topbar_city: "Marrakech, Maroc",
+                hero_title_1: "Échappez-vous sur les routes du Maroc avec", hero_subtitle: "Louez des véhicules récents, parfaitement entretenus et au meilleur prix à Marrakech. Service premium 24h/7j, transparence totale et sans frais cachés.",
+                stat_vehicles: "Véhicules récents", stat_price: "À partir de / jour", stat_support: "Support Client",
+                label_pickup_loc: "Lieu de prise en charge", label_return_loc: "Lieu de restitution", label_start_date: "Date de début", label_end_date: "Date de fin",
+                opt_ap: "Aéroport Marrakech-Ménara", opt_gueliz: "Guéliz", opt_medina: "Médina", opt_center: "Centre-ville", opt_station: "Gare Ferroviaire", opt_other: "Autre (À préciser)...",
+                booking_bar_info: "* Choisissez vos critères ci-dessus, puis cliquez sur \"Réserver\" sous le véhicule de votre choix.",
+                fleet_title: "Notre Flotte de Véhicules", fleet_subtitle: "Des voitures économiques pour la ville aux SUV familiaux, trouvez le véhicule idéal pour votre séjour.",
+                reviews_title: "Avis de nos clients", reviews_subtitle: "Découvrez ce que nos clients disent de leur expérience avec ECHAPPE CAR.",
+                review_1_text: "Service rapide, voiture propre et livraison à l'aéroport sans problème. Je recommande vivement.", review_1_name: "Yassine B.",
+                review_2_text: "Très bon accueil, prix correct et communication facile sur WhatsApp. Très satisfait.", review_2_name: "Sara M.",
+                review_3_text: "Excellent service et voiture en très bon état. Tout était simple et transparent.", review_3_name: "Mohamed A.",
+                badge_popular: "POPULAIRE", spec_manual: "Manuelle", spec_auto: "Automatique", spec_diesel: "Diesel", spec_essence: "Essence", spec_doors: "portes", 
+                btn_card_book: "Réserver ce véhicule", btn_card_view_all: "Voir tout",
+                how_title: "Comment ça marche ?", how_step1_title: "Sélectionnez & Planifiez", how_step1_desc: "Choisissez vos dates et lieux de prise en charge directement depuis notre outil intelligent.",
+                how_step2_title: "Validez via WhatsApp", how_step2_desc: "Cliquez sur réserver, un agent dédié reçoit votre configuration instantanément pour valider la disponibilité.",
+                how_step3_title: "Prenez la Route", how_step3_desc: "Nous vous livrons le véhicule propre et prêt à l'endroit convenu à Marrakech. Bonne route !",
+                why_title: "Pourquoi Choisir ECHAPPE CAR ?", why_feat1_title: "Prix Transparents", why_feat1_desc: "Aucun frais caché. Ce que vous voyez est exactement ce que vous payez.",
+                why_feat2_title: "Livraison Flexible", why_feat2_desc: "À l'aéroport, à votre hôtel ou riad, nous venons là où vous êtes.",
+                why_feat3_title: "Propreté Irréprochable", why_feat3_desc: "Chaque véhicule est entièrement désinfecté et lavé avant livraison.",
+                why_feat4_title: "Assistance 24h/7j", why_feat4_desc: "Une équipe technique et commerciale à votre écoute de jour comme de nuit.",
+                footer_desc: "Votre partenaire de confiance pour l'exploration de Marrakech et du Maroc dans un confort optimal et en toute sécurité.",
+                footer_maps: "Voir sur Google Maps",
+                btn_contact_wa_1: "Nous Contacter (WhatsApp 1)", btn_contact_wa_2: "Nous Contacter (WhatsApp 2)", md_badge_title: "Livraison Aéroport Gratuite",
+                md_badge_desc: "Pour tout séjour d'une durée minimale de 3 jours, ECHAPPE CAR vous remet les clés de votre voiture directement à la sortie de l'Aéroport Marrakech-Ménara sans aucun frais supplémentaire. Un agent vous attendra avec un panneau nominatif.",
+                md_close: "Fermer", md_book_summary: "Résumé de la sélection", md_book_included: "Ce qui est inclus gratuitement :",
+                inc_ac: "Climatisation fonctionnelle", inc_ins: "Assurance tous risques", inc_km: "Kilométrage illimité", inc_24: "Assistance technique 24/7",
+                md_dates: "Dates de location", btn_confirm_wa: "Réserver sur WhatsApp", md_cancel: "Modifier les dates / Annuler",
+                msg_alert_dates: "Veuillez sélectionner des dates de début et de fin valides dans la barre de réservation.",
+                vt_modal_subtitle: "Garanties de confiance et transparence totale ECHAPPE CAR",
+                vt_sec1_title: "Vous obtenez gratuitement", vt_sec1_item1: "Véhicule climatisé et propre", vt_sec1_item2: "Kilométrage illimité", vt_sec1_item3: "Assurance de base",
+                vt_sec2_title: "Votre réservation comprend", vt_sec2_item1: "Annulation gratuite avant 48h", vt_sec2_item2: "Modifications Gratuites", vt_sec2_item3: "Protection contre le vol", vt_sec2_item4: "Rachat de franchise", vt_sec2_item5: "Taxes locales incluses", vt_sec2_item6: "Aucuns frais de carte de crédit"
             },
             en: {
-                subtitle: "Luxury Rental",
-                lnkFleet: "Our Fleet", lnkHow: "How to Book", lnkAdv: "Advantages", lnkContact: "Contact",
-                btnNavBook: "Book Now", heroBadge: "🛡️ ECHAPPE CAR Guarantee",
-                heroTitle: "Car Rental in <br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300'>Marrakech</span>",
-                heroDesc: "Transparent pricing, free delivery to Menara Airport, and immediate validation over WhatsApp.",
-                heroBtnPrimary: "Browse Fleet <i class='fa-solid fa-arrow-right text-xs'></i>", heroBtnSecondary: "How to Book",
-                statCars: "Cars Available", statPrice: "Starting from", statAvail: "Available 24/7",
-                lblPickup: "Pickup Location", lblStart: "Pickup Date", lblReturn: "Return Location", lblEnd: "Return Date",
-                btnSearch: "<i class='fa-solid fa-magnifying-glass'></i> Search Now",
-                fleetTag: "Our Fleet", fleetTitleMain: "Choose Your Vehicle",
-                fleetDesc: "Perfectly clean and fully maintained vehicles ready for you in Marrakech",
-                howTag: "Fast & Easy", howTitleMain: "How to Rent?",
-                howDesc: "Three intuitive steps to lock down your rental car with full security",
-                step1H: "Select Vehicle & Dates", step1P: "Pick your ideal model and insert your destination parameters above.",
-                step2H: "WhatsApp Checkout", step2P: "Hit book to shoot your details over to our live agent instantly on WhatsApp.",
-                step3H: "Collect & Drive", step3P: "We bring the fresh car to your exact location. Enjoy Morocco!",
-                advTag: "Our Perks", advTitleMain: "Why Choose Us?",
-                advDesc: "The highest-rated car rental service experience in Marrakech",
-                adv1H: "Best Rates", adv1P: "Unmatched pricing starting from 250 DH/day. Zero hidden surcharges.",
-                adv2H: "Airport Delivery", adv2P: "We will be waiting with your car at Menara Airport terminal upon touchdown.",
-                adv3H: "Clean Fleets", adv3P: "Vehicles are meticulously washed, detailed, and mechanically inspected.",
-                adv4H: "Instant Chat Setup", adv4P: "Complete your rental processing with effortless text messages.",
-                adv5H: "Everywhere in Town", adv5P: "Medina, Gueliz, Agdal, or hotels — we deliver anywhere.",
-                adv6H: "Flexible Offloading", adv6P: "Drop the vehicle off at any spot that fits your travel plan.",
-                contactTag: "Support", contactTitleMain: "Need Assistance? Let's Talk",
-                contactDesc: "Our customer success managers are online 24/7",
-                c1Lbl: "Phone / WhatsApp", c2Lbl: "Headquarters", c3Lbl: "Email Address",
-                btnContactWa: "<i class='fa-brands fa-whatsapp text-xl'></i> Chat on WhatsApp",
-                btnViewAll: "Show all", btnViewLess: "Show less",
-                lblDay: "day", badgePopular: "Popular", btnBookNow: "Book Now", optOther: "Other",
-                modalGTitle: "ECHAPPE CAR Guarantee",
-                modalGBody: `<p><strong>✓ Unlimited Mileage:</strong> Discover Morocco freely without running out of kilometers.</p>
-                             <p><strong>✓ Premium Coverage:</strong> Drive stress-free knowing you have comprehensive insurance.</p>
-                             <p><strong>✓ Flat Pricing:</strong> What you see is exactly what you pay upon arrival. Period.</p>
-                             <p><strong>✓ 24/7 Road Support:</strong> We have a reactive crew standing by for any emergency situation.</p>`,
-                modalBTitle: "Confirm Request", modalBDesc: "Your data is organized and will be processed immediately inside WhatsApp.",
-                modalBSelected: "Selected Ride", modalBBtn: "Proceed to WhatsApp"
+                nav_home: "Home", nav_fleet: "Our Fleet", nav_how: "How to Book", nav_reviews: "Reviews", nav_why: "Why Us", nav_contact: "Contact",
+                btn_book_now: "Book Now", hero_badge: "Free delivery at Marrakech Airport", topbar_city: "Marrakech, Morocco",
+                hero_title_1: "Escape on the roads of Morocco with", hero_subtitle: "Rent recent, perfectly maintained vehicles at the best price in Marrakech. 24/7 premium service, total transparency and no hidden fees.",
+                stat_vehicles: "Recent Vehicles", stat_price: "Starting from / day", stat_support: "Customer Support",
+                label_pickup_loc: "Pick-up Location", label_return_loc: "Return Location", label_start_date: "Start Date", label_end_date: "End Date",
+                opt_ap: "Marrakech-Menara Airport", opt_gueliz: "Gueliz", opt_medina: "Medina", opt_center: "Downtown", opt_station: "Train Station", opt_other: "Other (Specify)...",
+                booking_bar_info: "* Select your criteria above, then click \"Book Now\" under the vehicle of your choice.",
+                fleet_title: "Our Vehicle Fleet", fleet_subtitle: "From economic city cars to family SUVs, find the ideal vehicle for your stay.",
+                reviews_title: "Customer Reviews", reviews_subtitle: "See what our clients say about their experience with ECHAPPE CAR.",
+                review_1_text: "Fast service, clean car and smooth airport delivery. Highly recommended.", review_1_name: "Yassine B.",
+                review_2_text: "Very welcoming, fair price and easy WhatsApp communication. Very satisfied.", review_2_name: "Sara M.",
+                review_3_text: "Excellent service and the car was in great condition. Everything was simple and transparent.", review_3_name: "Mohamed A.",
+                badge_popular: "POPULAR", spec_manual: "Manual", spec_auto: "Automatic", spec_diesel: "Diesel", spec_essence: "Petrol", spec_doors: "doors", 
+                btn_card_book: "Book this vehicle", btn_card_view_all: "View details",
+                how_title: "How it works?", how_step1_title: "Select & Plan", how_step1_desc: "Choose your dates and pick-up locations directly from our smart tool.",
+                how_step2_title: "Validate via WhatsApp", how_step2_desc: "Click book, a dedicated agent receives your setup instantly to validate availability.",
+                how_step3_title: "Hit the Road", how_step3_desc: "We deliver the vehicle clean and ready to the agreed place in Marrakech. Safe drive!",
+                why_title: "Why Choose ECHAPPE CAR?", why_feat1_title: "Transparent Prices", why_feat1_desc: "No hidden fees. What you see is exactly what you pay.",
+                why_feat2_title: "Flexible Delivery", why_feat2_desc: "At the airport, your hotel or riad, we come wherever you are.",
+                why_feat3_title: "Impeccable Cleanliness", why_feat3_desc: "Each vehicle is fully disinfected and washed before delivery.",
+                why_feat4_title: "24/7 Support", why_feat4_desc: "A technical and commercial team at your disposal day and night.",
+                footer_desc: "Your trusted partner for exploring Marrakech and Morocco in optimal comfort and complete safety.",
+                footer_maps: "View on Google Maps",
+                btn_contact_wa_1: "Contact Us (WhatsApp 1)", btn_contact_wa_2: "Contact Us (WhatsApp 2)", md_badge_title: "Free Airport Delivery",
+                md_badge_desc: "For any stay of minimum 3 days, ECHAPPE CAR hands you the keys to your car directly at the exit of Marrakech-Menara Airport without any extra charge. An agent will be waiting for you with a name sign.",
+                md_close: "Close", md_book_summary: "Selection Summary", md_book_included: "What is included for free:",
+                inc_ac: "Functional Air Conditioning", inc_ins: "Comprehensive Insurance", inc_km: "Unlimited Mileage", inc_24: "24/7 Technical Assistance",
+                md_dates: "Rental Dates", btn_confirm_wa: "Book on WhatsApp", md_cancel: "Modify dates / Cancel",
+                msg_alert_dates: "Please select valid start and end dates in the booking bar.",
+                vt_modal_subtitle: "Trust guarantees and full transparency by ECHAPPE CAR",
+                vt_sec1_title: "You get for free", vt_sec1_item1: "Air-conditioned and clean vehicle", vt_sec1_item2: "Unlimited mileage", vt_sec1_item3: "Basic insurance",
+                vt_sec2_title: "Your booking includes", vt_sec2_item1: "Free cancellation before 48h", vt_sec2_item2: "Free Amendments", vt_sec2_item3: "Theft protection", vt_sec2_item4: "Deductible buyback", vt_sec2_item5: "Local taxes included", vt_sec2_item6: "No credit card fees"
             },
             ar: {
-                subtitle: "تأجير سيارات فخم",
-                lnkFleet: "أسطولنا", lnkHow: "كيفية الحجز", lnkAdv: "المميزات", lnkContact: "اتصل بنا",
-                btnNavBook: "احجز الآن", heroBadge: "🛡️ ضمان إشاب كار",
-                heroTitle: "كراء السيارات في <br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300'>مراكش</span>",
-                heroDesc: "أسعار شفافة وبدون مصاريف خفية، تسليم مجاني في المطار وحجز فوري عبر الواتساب.",
-                heroBtnPrimary: "عرض السيارات <i class='fa-solid fa-arrow-left text-xs'></i>", heroBtnSecondary: "كيفية الحجز",
-                statCars: "سيارات متوفرة", statPrice: "إبتداءً من", statAvail: "متوفر 24/7",
-                lblPickup: "مكان الاستلام", lblStart: "تاريخ الاستلام", lblReturn: "مكان الإرجاع", lblEnd: "تاريخ الإرجاع",
-                btnSearch: "<i class='fa-solid fa-magnifying-glass'></i> ابحث الآن",
-                fleetTag: "أسطولنا", fleetTitleMain: "اختر سيارتك المناسبة",
-                fleetDesc: "سيارات معقمة، نظيفة ومصانة جيداً جاهزة لخدمتكم في أي وقت بمراكش",
-                howTag: "سهل وسريع", howTitleMain: "كيف تحجز سيارتك ؟",
-                howDesc: "ثلاث خطوات بسيطة وسريعة لتأجير سيارتك بكل أمان وراحة بال",
-                step1H: "تحديد السيارة والتواريخ", step1P: "اختر نوع السيارة المفضلة وتواريخ الاستلام والتسليم بدقة في الحقول أعلاه.",
-                step2H: "التأكيد عبر الواتساب", step2P: "اضغط على زر الحجز لإرسال تفاصيل طلبك فوراً لخدمة العملاء في الواتساب.",
-                step3H: "الاستلام والانطلاق", step3P: "نوصل لك السيارة نظيفة وجاهزة للمكان المحدد. رحلة سعيدة وموفقة!",
-                advTag: "مميزاتنا", advTitleMain: "لماذا نحن الأفضل في مراكش ؟",
-                advDesc: "أفضل وأرقى خدمة كراء سيارات متكاملة لتجربة سفر مريحة",
-                adv1H: "أفضل الأسعار", adv1P: "أسعار واضحة وتنافسية تبدأ من 250 درهم/اليوم دون أي مفاجآت.",
-                adv2H: "التسليم في المطار", adv2P: "نكون في انتظارك فور وصولك لمطار مراكش المنارة لنسلمك المفاتيح.",
-                adv3H: "نظافة وضمان تام", adv3P: "تخضع سياراتنا لعمليات تنظيف وفحص ميكانيكي دوري وصارم لسلامتك.",
-                adv4H: "حجز مباشر وسهل", adv4P: "أتمم كراء سيارتك عبر محادثة واتساب سريعة ودون تعقيدات الورقيات.",
-                adv5H: "التوصيل لأي مكان", adv5P: "جليز، المدينة العتيقة، المحطة، أو الفنادق — نصل إليك أينما كنت.",
-                adv6H: "مرونة كاملة في الإرجاع", adv6P: "يمكنك إرجاع السيارة في أي نقطة أو حي يناسب مخططاتك.",
-                contactTag: "الدعم", contactTitleMain: "لديك استفسار؟ تواصل معنا",
-                contactDesc: "فريق الدعم متواجد ومستعد لمساعدتك على مدار الساعة 24/7",
-                c1Lbl: "الهاتف / الواتساب", c2Lbl: "مكتبنا", c3Lbl: "البريد الإلكتروني",
-                btnContactWa: "<i class='fa-brands fa-whatsapp text-xl'></i> تحدث معنا الآن",
-                btnViewAll: "عرض الكل", btnViewLess: "عرض أقل",
-                lblDay: "يوم", badgePopular: "موصى به", btnBookNow: "احجز الآن", optOther: "أخرى",
-                modalGTitle: "ضمان ECHAPPE CAR",
-                modalGBody: `<p><strong>✓ مسافة غير محدودة:</strong> استمتع برحلتك واكتشف مغامراتك دون قلق بشأن الكيلومترات.</p>
-                             <p><strong>✓ تأمين شامل:</strong> قد براحة بال تامة بفضل التغطية التأمينية الشاملة والمتميزة.</p>
-                             <p><strong>✓ بدون مصاريف خفية:</strong> السعر المتفق عليه أثناء الحجز هو نفسه الذي تدفعه عند الاستلام.</p>
-                             <p><strong>✓ دعم متواصل 24/7:</strong> فريقنا متواجد ومستعد لمساعدتك وتوجيهك في أي لحظة.</p>`,
-                modalBTitle: "تأكيد الطلب", modalBDesc: "سيتم تحضير بيانات طلبك والانتقال لتطبيق الواتساب لإتمام الإجراءات فوراً.",
-                modalBSelected: "السيارة المختارة", modalBBtn: "الانتقال إلى الواتساب"
+                nav_home: "الرئيسية", nav_fleet: "أسطولنا", nav_how: "كيفية الحجز", nav_reviews: "التقييمات", nav_why: "لماذا نحن", nav_contact: "اتصل بنا",
+                btn_book_now: "احجز الآن", hero_badge: "توصيل مجاني في مطار مراكش", topbar_city: "مراكش، المغرب",
+                hero_title_1: "انطلق في مغامرتك عبر طرق المغرب مع", hero_subtitle: "اكتشف سيارات حديثة، مصانة بعناية وبأفضل الأسعار في مراكش. خدمة ممتازة 24/7، شفافية مطلقة وبدون رسوم خفية.",
+                stat_vehicles: "سيارة حديثة", stat_price: "ابتداءً من / اليوم", stat_support: "دعم متواصل 24/7",
+                label_pickup_loc: "مكان الاستلام", label_return_loc: "مكان الإرجاع", label_start_date: "تاريخ البدء", label_end_date: "تاريخ الانتهاء",
+                opt_ap: "مطار مراكش المنارة", opt_gueliz: "جيليز", opt_medina: "المدينة العتيقة", opt_center: "وسط المدينة", opt_station: "محطة القطار", opt_other: "مكان آخر (يرجى التحديد)...",
+                booking_bar_info: "* حدد خياراتك أعلاه، ثم اضغط على \"احجز الآن\" أسفل السيارة التي تريدها.",
+                fleet_title: "أسطول السيارات المتاحة", fleet_subtitle: "من السيارات الاقتصادية للمدينة إلى السيارات العائلية الكبيرة، اعثر على الخيار المثالي لإقامتك.",
+                reviews_title: "تقييمات الزبناء", reviews_subtitle: "اكتشف ما يقوله عملاؤنا عن تجربتهم مع ECHAPPE CAR.",
+                review_1_text: "خدمة سريعة، سيارة نظيفة وتسليم سلس في المطار. أوصي بها بشدة.", review_1_name: "ياسين ب.",
+                review_2_text: "استقبال ممتاز، سعر مناسب وتواصل سهل عبر واتساب. راضٍ جداً.", review_2_name: "سارة م.",
+                review_3_text: "خدمة ممتازة والسيارة كانت في حالة جيدة جداً. كل شيء كان بسيطاً وشفافاً.", review_3_name: "محمد أ.",
+                badge_popular: "شعبية", spec_manual: "يدوي", spec_auto: "أوتوماتيك", spec_diesel: "ديزل", spec_essence: "بنزين", spec_doors: "أبواب", 
+                btn_card_book: "احجز هذه السيارة", btn_card_view_all: "عرض التفاصيل",
+                how_title: "كيف تتم العملية؟", how_step1_title: "حدد التواريخ والمكان", how_step1_desc: "اختر تواريخك وأماكن الاستلام بدقة عبر شريط الحجز الذكي.",
+                how_step2_title: "تأكيد فوري عبر واتساب", how_step2_desc: "بمجرد الضغط على حجز، سيتلقى وكيلنا تفاصيل طلبك مباشرة للتحقق من التوفر.",
+                how_step3_title: "استلم سيارتك وانطلق", how_step3_desc: "نسلمك السيارة نظيفة وجاهزة تماماً في المكان المتفق عليه في مراكش. رحلة سعيدة!",
+                why_title: "لماذا تختار ECHAPPE CAR؟", why_feat1_title: "أسعار شفافة", why_feat1_desc: "لا توجد رسوم خفية مفاجئة. السعر الظاهر هو ما ستدفعه تماماً.",
+                why_feat2_title: "مرونة في التسليم", why_feat2_desc: "في المطار، الفندق، أو الرياض، نأتي إليك أينما كنت في مراكش.",
+                why_feat3_title: "نظافة مثالية", why_feat3_desc: "يتم تعقيم وتنظيف كل سيارة بعناية فائقة قبل تسليمها لكل زبون.",
+                why_feat4_title: "دعم فني متواصل", why_feat4_desc: "فريق تقني وتجاري رهن إشارتكم في أي وقت من الليل أو النهار.",
+                footer_desc: "شريكك الموثوق لاستكشاف مراكش والمغرب بكل راحة وأمان.",
+                footer_maps: "عرض على خرائط Google",
+                btn_contact_wa_1: "تواصل معنا (واتساب 1)", btn_contact_wa_2: "تواصل معنا (واتساب 2)", md_badge_title: "توصيل مجاني للمطار",
+                md_badge_desc: "للحجوزات التي تعادل أو تفوق 3 أيام، تقدم لكم ECHAPPE CAR خدمة تسليم السيارة مباشرة عند مخرج مطار مراكش المنارة بدون أي تكلفة إضافية. سيكون وكيلنا في انتظاركم حاملاً لوحة باسمكم.",
+                md_close: "إغلاق", md_book_summary: "ملخص الاختيار", md_book_included: "الخدمات المضمنة مجاناً:",
+                inc_ac: "مكيف هواء فعال", inc_ins: "تأمين شامل ضد المخاطر", inc_km: "مسافة غير محدودة", inc_24: "مساعدة تقنية 24/7",
+                md_dates: "تواريخ الكراء", btn_confirm_wa: "تأكيد الحجز عبر واتساب", md_cancel: "تعديل التواريخ / إلغاء",
+                msg_alert_dates: "يرجى تحديد تواريخ بدء وانتهاء صالحة في شريط الحجز أولاً.",
+                vt_modal_subtitle: "ضمانات الثقة والشفافية الكاملة من ECHAPPE CAR",
+                vt_sec1_title: "تحصل عليه مجاناً", vt_sec1_item1: "سيارة نظيفة ومكيفة بالكامل", vt_sec1_item2: "مسافة كيلومترات غير محدودة", vt_sec1_item3: "تأمين أساسي مضمن",
+                vt_sec2_title: "حجزك يشمل المزايا التالية", vt_sec2_item1: "إلغاء مجاني قبل 48 ساعة", vt_sec2_item2: "تعديلات مجانية على الطلب", vt_sec2_item3: "حماية ضد سرقة السيارة", vt_sec2_item4: "إعفاء جزئي من المسؤولية", vt_sec2_item5: "الضرائب والرسوم المحلية مشمولة", vt_sec2_item6: "بدون أي رسوم إضافية على بطاقة الائتمان"
+            },
+            es: {
+                nav_home: "Inicio", nav_fleet: "Nuestra Flota", nav_how: "Cómo Reservar", nav_reviews: "Reseñas", nav_why: "Por Qué Nosotros", nav_contact: "Contacto",
+                btn_book_now: "Reservar", hero_badge: "Entrega gratuita en el Aeropuerto de Marrakech", topbar_city: "Marrakech, Marruecos",
+                hero_title_1: "Escápate por las carreteras de Marruecos con", hero_subtitle: "Alquila vehículos recientes y perfectamente mantenidos al mejor precio en Marrakech. Servicio premium 24/7, transparencia total y sin costes ocultos.",
+                stat_vehicles: "Vehículos recientes", stat_price: "Desde / día", stat_support: "Soporte al Cliente",
+                label_pickup_loc: "Lugar de recogida", label_return_loc: "Lugar de devolución", label_start_date: "Fecha de inicio", label_end_date: "Fecha de fin",
+                opt_ap: "Aeropuerto de Marrakech-Menara", opt_gueliz: "Gueliz", opt_medina: "Medina", opt_center: "Centro de la ciudad", opt_station: "Estación de Tren", opt_other: "Otro (Especificar)...",
+                booking_bar_info: "* Elija sus criterios arriba, luego haga clic en \"Reservar\" debajo del vehículo de su elección.",
+                fleet_title: "Nuestra Flota de Vehículos", fleet_subtitle: "Desde coches económicos para la ciudad hasta SUV familiares, encuentre el vehículo ideal para su estancia.",
+                reviews_title: "Opiniones de clientes", reviews_subtitle: "Descubre lo que dicen nuestros clientes sobre su experiencia con ECHAPPE CAR.",
+                review_1_text: "Servicio rápido, coche limpio y entrega en el aeropuerto sin problemas. Muy recomendable.", review_1_name: "Yassine B.",
+                review_2_text: "Muy buena atención, precio justo y comunicación fácil por WhatsApp. Muy satisfecho.", review_2_name: "Sara M.",
+                review_3_text: "Excelente servicio y el coche estaba en muy buen estado. Todo fue simple y transparente.", review_3_name: "Mohamed A.",
+                badge_popular: "POPULAR", spec_manual: "Manual", spec_auto: "Automático", spec_diesel: "Diésel", spec_essence: "Gasolina", spec_doors: "puertas", 
+                btn_card_book: "Reservar este vehículo", btn_card_view_all: "Ver detalles",
+                how_title: "¿Cómo funciona?", how_step1_title: "Seleccionar y Planificar", how_step1_desc: "Elija sus fechas y lugares de recogida directamente desde nuestra herramienta inteligente.",
+                how_step2_title: "Validar vía WhatsApp", how_step2_desc: "Haga clic en reservar, un agente dedicado recibe su configuración instantáneamente para validar la disponibilidad.",
+                how_step3_title: "En marcha", how_step3_desc: "Le entregamos el vehículo limpio y listo en el lugar acordado en Marrakech. ¡Buen viaje!",
+                why_title: "¿Por Qué Elegir ECHAPPE CAR?", why_feat1_title: "Precios Transparentes", why_feat1_desc: "Sin comisiones ocultas. Lo que ves es exactamente lo que pagas.",
+                why_feat2_title: "Entrega Flexible", why_feat2_desc: "En el aeropuerto, en tu hotel o riad, vamos a donde estés.",
+                why_feat3_title: "Limpieza Impecable", why_feat3_desc: "Cada vehículo se desinfecta y lava por completo antes de la entrega.",
+                why_feat4_title: "Asistencia 24/7", why_feat4_desc: "Un equipo técnico y comercial a tu escucha de día y de noche.",
+                footer_desc: "Su socio de confianza para explorar Marrakech y Marruecos con la máxima comodidad y seguridad.",
+                footer_maps: "Ver en Google Maps",
+                btn_contact_wa_1: "Contáctenos (WhatsApp 1)", btn_contact_wa_2: "Contáctenos (WhatsApp 2)", md_badge_title: "Entrega Gratuita en el Aeropuerto",
+                md_badge_desc: "Para cualquier estancia de mínimo 3 días, ECHAPPE CAR le entrega las llaves de su coche directamente a la salida del Aeropuerto de Marrakech-Menara sin ningún cargo extra. Un agente le esperará con un cartel con su nombre.",
+                md_close: "Cerrar", md_book_summary: "Resumen de la Selección", md_book_included: "Qué está incluido gratis:",
+                inc_ac: "Aire Acondicionado Funcional", inc_ins: "Seguro a Todo Riesgo", inc_km: "Kilometraje Ilimitado", inc_24: "Asistencia Técnica 24/7",
+                md_dates: "Fechas de Alquiler", btn_confirm_wa: "Reservar en WhatsApp", md_cancel: "Modificar fechas / Cancelar",
+                msg_alert_dates: "Por favor, seleccione fechas de inicio y fin válidas en la barra de reserva.",
+                vt_modal_subtitle: "Garantías de confianza y total transparencia por ECHAPPE CAR",
+                vt_sec1_title: "Consigues gratis", vt_sec1_item1: "Vehículo limpio y con aire acondicionado", vt_sec1_item2: "Kilometraje ilimitado", vt_sec1_item3: "Seguro básico incluido",
+                vt_sec2_title: "Tu reserva incluye", vt_sec2_item1: "Cancelación gratuita antes de 48h", vt_sec2_item2: "Modificaciones gratuitas", vt_sec2_item3: "Protección contra robo", vt_sec2_item4: "Exención de franquicia", vt_sec2_item5: "Impuestos locales incluidos", vt_sec2_item6: "Sin cargos por tarjeta de crédito"
+            },
+            de: {
+                nav_home: "Startseite", nav_fleet: "Unsere Flotte", nav_how: "Buchungsablauf", nav_reviews: "Bewertungen", nav_why: "Warum Wir", nav_contact: "Kontakt",
+                btn_book_now: "Jetzt Buchen", hero_badge: "Kostenlose Lieferung am Flughafen Marrakesch", topbar_city: "Marrakesch, Marokko",
+                hero_title_1: "Entfliehen Sie auf den Straßen Marokkos mit", hero_subtitle: "Mieten Sie neuwertige, perfekt gewartete Fahrzeuge zum besten Preis in Marrakesch. 24/7 Premium-Service, volle Transparenz und keine versteckten Kosten.",
+                stat_vehicles: "Neueste Fahrzeuge", stat_price: "Ab / Tag", stat_support: "Kundenbetreuung",
+                label_pickup_loc: "Abholort", label_return_loc: "Rückgabeort", label_start_date: "Abholdatum", label_end_date: "Rückgabedatum",
+                opt_ap: "Flughafen Marrakesch-Menara", opt_gueliz: "Gueliz", opt_medina: "Medina", opt_center: "Stadtzentrum", opt_station: "Bahnhof", opt_other: "Anderer Ort (Bitte angeben)...",
+                booking_bar_info: "* Wählen Sie oben Ihre Kriterien aus und klicken Sie dann unter dem Fahrzeug Ihrer Wahl auf \"Jetzt Buchen\".",
+                fleet_title: "Unsere Fahrzeugflotte", fleet_subtitle: "Vom wirtschaftlichen Stadtauto bis zum Familien-SUV, finden Sie das ideale Fahrzeug für Ihren Aufenthalt.",
+                reviews_title: "Kundenbewertungen", reviews_subtitle: "Sehen Sie, was unsere Kunden über ihre Erfahrung mit ECHAPPE CAR sagen.",
+                review_1_text: "Schneller Service, sauberes Auto und problemlose Lieferung am Flughafen. Sehr empfehlenswert.", review_1_name: "Yassine B.",
+                review_2_text: "Sehr freundlicher Empfang, fairer Preis und einfache Kommunikation über WhatsApp. Sehr zufrieden.", review_2_name: "Sara M.",
+                review_3_text: "Ausgezeichneter Service und das Auto war in sehr gutem Zustand. Alles war einfach und transparent.", review_3_name: "Mohamed A.",
+                badge_popular: "BELIEBT", spec_manual: "Manuell", spec_auto: "Automatik", spec_diesel: "Diesel", spec_essence: "Benzin", spec_doors: "Türen", 
+                btn_card_book: "Dieses Fahrzeug buchen", btn_card_view_all: "Details anzeigen",
+                how_title: "Wie funktioniert es?", how_step1_title: "Auswählen & Planen", how_step1_desc: "Wählen Sie Ihre Termine und Abholorte direkt über unser intelligentes Tool.",
+                how_step2_title: "Per WhatsApp bestätigen", how_step2_desc: "Klicken Sie auf Buchen, ein engagierter Mitarbeiter erhält Ihre Konfiguration sofort, um die Verfügbarkeit zu prüfen.",
+                how_step3_title: "Gute Fahrt", how_step3_desc: "Wir liefern das Fahrzeug sauber und fahrbereit an den vereinbarten Ort in Marrakesch. Gute Fahrt!",
+                why_title: "Warum ECHAPPE CAR wählen?", why_feat1_title: "Transparente Preise", why_feat1_desc: "Keine versteckten Gebühren. Was Sie sehen, ist genau das, was Sie bezahlen.",
+                why_feat2_title: "Flexible Lieferung", why_feat2_desc: "Am Flughafen, in Ihrem Hotel oder Riad, wir kommen überall hin, wo Sie sind.",
+                why_feat3_title: "Tadellose Sauberkeit", why_feat3_desc: "Jedes Fahrzeug wird vor der Lieferung vollständig desinfiziert und gewaschen.",
+                why_feat4_title: "24/7 Unterstützung", why_feat4_desc: "Ein technisches und kommerzielles Team steht Ihnen Tag und Nacht zur Verfügung.",
+                footer_desc: "Ihr zuverlässiger Partner für die Erkundung von Marrakesch und Marokko bei optimalem Komfort und voller Sicherheit.",
+                footer_maps: "Auf Google Maps ansehen",
+                btn_contact_wa_1: "Kontakt (WhatsApp 1)", btn_contact_wa_2: "Kontakt (WhatsApp 2)", md_badge_title: "Kostenlose Flughafenlieferung",
+                md_badge_desc: "Bei einem Mindestaufenthalt von 3 Tagen übergibt Ihnen ECHAPPE CAR die Autoschlüssel direkt am Ausgang des Flughafens Marrakesch-Menara ohne Aufpreis. Ein Mitarbeiter erwartet Sie mit einem Namensschild.",
+                md_close: "Schließen", md_book_summary: "Zusammenfassung der Auswahl", md_book_included: "Was kostenlos enthalten ist:",
+                inc_ac: "Funktionierende Klimaanlage", inc_ins: "Vollkaskoversicherung", inc_km: "Unbegrenzte Kilometer", inc_24: "24/7 Technische Unterstützung",
+                md_dates: "Mietdaten", btn_confirm_wa: "Auf WhatsApp buchen", md_cancel: "Termine ändern / Abbrechen",
+                msg_alert_dates: "Bitte wählen Sie gültige Start- und Enddaten in der Buchungsleiste aus.",
+                vt_modal_subtitle: "Vertrauensgarantie und volle Transparenz von ECHAPPE CAR",
+                vt_sec1_title: "Sie erhalten kostenlos", vt_sec1_item1: "Klimatisiertes und sauberes Fahrzeug", vt_sec1_item2: "Unbegrenzte Kilometerzahl", vt_sec1_item3: "Basisversicherung inklusive",
+                vt_sec2_title: "Ihre Buchung beinhaltet", vt_sec2_item1: "Kostenlose Stornierung bis 48 Std. vorher", vt_sec2_item2: "Kostenlose Änderungen", vt_sec2_item3: "Diebstahlschutz", vt_sec2_item4: "Selbstbeteiligungs-Ausschluss", vt_sec2_item5: "Inklusive lokaler Steuern", vt_sec2_item6: "Keine Kreditkartengebühren"
             }
         };
 
-        function toggleLangMenu() {
-            document.getElementById('langMenu').classList.toggle('hidden');
-        }
+        let currentLang = 'fr';
+        let selectedCar = null;
 
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            document.getElementById('langMenu').classList.add('hidden');
-            
-            const flags = { fr: '🇫🇷', en: '🇬🇧', ar: '🇲🇦' };
-            const labels = { fr: 'Français', en: 'English', ar: 'العربية' };
-            
-            document.getElementById('currentFlag').textContent = flags[lang];
-            document.getElementById('currentLangLabel').textContent = labels[lang];
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').min = today;
+            document.getElementById('end_date').min = today;
+            renderCarsGrid();
+            changeLanguage('fr');
+        });
 
-            if (lang === 'ar') {
-                document.documentElement.dir = 'rtl';
-                document.documentElement.classList.add('font-cairo');
-            } else {
-                document.documentElement.dir = 'ltr';
-                document.documentElement.classList.remove('font-cairo');
-            }
-
-            applyLocalization();
-        }
-
-        function applyLocalization() {
-            const t = TRANSLATIONS[currentLanguage];
-            
-            document.getElementById('nav-subtitle').textContent = t.subtitle;
-            document.getElementById('lnk-fleet').childNodes[0].textContent = t.lnkFleet;
-            document.getElementById('lnk-how').childNodes[0].textContent = t.lnkHow;
-            document.getElementById('lnk-adv').childNodes[0].textContent = t.lnkAdv;
-            document.getElementById('lnk-contact').childNodes[0].textContent = t.lnkContact;
-            document.getElementById('btn-nav-book').textContent = t.btnNavBook;
-            
-            document.getElementById('hero-badge').textContent = t.heroBadge;
-            document.getElementById('hero-title').innerHTML = t.heroTitle;
-            document.getElementById('hero-desc').textContent = t.heroDesc;
-            document.getElementById('hero-btn-primary').innerHTML = t.heroBtnPrimary;
-            document.getElementById('hero-btn-secondary').textContent = t.heroBtnSecondary;
-            
-            document.getElementById('stat-cars').textContent = t.statCars;
-            document.getElementById('stat-price').textContent = t.statPrice;
-            document.getElementById('stat-avail').textContent = t.statAvail;
-            
-            document.getElementById('lbl-pickup').textContent = t.lblPickup;
-            document.getElementById('lbl-start').textContent = t.lblStart;
-            document.getElementById('lbl-return').textContent = t.lblReturn;
-            document.getElementById('lbl-end').textContent = t.lblEnd;
-            document.getElementById('btn-search').innerHTML = t.btnSearch;
-            
-            document.getElementById('fleet-tag').textContent = t.fleetTag;
-            document.getElementById('fleet-title-main').textContent = t.fleetTitleMain;
-            document.getElementById('fleet-desc').textContent = t.fleetDesc;
-            
-            document.getElementById('how-tag').textContent = t.howTag;
-            document.getElementById('how-title-main').textContent = t.howTitleMain;
-            document.getElementById('how-desc').textContent = t.howDesc;
-            document.getElementById('step1-h').textContent = t.step1H;
-            document.getElementById('step1-p').textContent = t.step1P;
-            document.getElementById('step2-h').textContent = t.step2H;
-            document.getElementById('step2-p').textContent = t.step2P;
-            document.getElementById('step3-h').textContent = t.step3H;
-            document.getElementById('step3-p').textContent = t.step3P;
-            
-            document.getElementById('adv-tag').textContent = t.advTag;
-            document.getElementById('adv-title-main').textContent = t.advTitleMain;
-            document.getElementById('adv-desc').textContent = t.advDesc;
-            document.getElementById('adv1-h').textContent = t.adv1H;
-            document.getElementById('adv1-p').textContent = t.adv1P;
-            document.getElementById('adv2-h').textContent = t.adv2H;
-            document.getElementById('adv2-p').textContent = t.adv2P;
-            document.getElementById('adv3-h').textContent = t.adv3H;
-            document.getElementById('adv3-p').textContent = t.adv3P;
-            document.getElementById('adv4-h').textContent = t.adv4H;
-            document.getElementById('adv4-p').textContent = t.adv4P;
-            document.getElementById('adv5-h').textContent = t.adv5H;
-            document.getElementById('adv5-p').textContent = t.adv5P;
-            document.getElementById('adv6-h').textContent = t.adv6H;
-            document.getElementById('adv6-p').textContent = t.adv6P;
-            
-            document.getElementById('contact-tag').textContent = t.contactTag;
-            document.getElementById('contact-title-main').textContent = t.contactTitleMain;
-            document.getElementById('contact-desc').textContent = t.contactDesc;
-            document.getElementById('c1-lbl').textContent = t.c1Lbl;
-            document.getElementById('c2-lbl').textContent = t.c2Lbl;
-            document.getElementById('c3-lbl').textContent = t.c3Lbl;
-            document.getElementById('btn-contact-wa').innerHTML = t.btnContactWa;
-            
-            document.getElementById('opt-other-1').textContent = t.optOther;
-            document.getElementById('opt-other-2').textContent = t.optOther;
-            document.getElementById('custom_pickup').placeholder = currentLanguage === 'ar' ? 'حدد عنوانك بالتفصيل...' : 'Adresse précise...';
-            document.getElementById('custom_return').placeholder = currentLanguage === 'ar' ? 'حدد عنوانك بالتفصيل...' : 'Adresse précise...';
-
-            document.getElementById('btn-toggle-fleet').textContent = showAllCars ? t.btnViewLess : t.btnViewAll;
-
-            renderFleet();
-        }
-
-        function toggleCustomLocation(type) {
-            const selectEl = document.getElementById(`${type}_location`);
-            const customInput = document.getElementById(`custom_${type}`);
-            if (selectEl.value === 'Autre') {
-                customInput.classList.remove('hidden');
-            } else {
-                customInput.classList.add('hidden');
-            }
-        }
-
-        function renderFleet() {
-            const grid = document.getElementById('fleet-grid');
+        function renderCarsGrid() {
+            const grid = document.getElementById('carsGrid');
             grid.innerHTML = '';
 
-            const t = TRANSLATIONS[currentLanguage];
-            const visibleCars = showAllCars ? CARS : CARS.slice(0, 3);
-
-            visibleCars.forEach(car => {
+            CARS.forEach(car => {
+                const isPopular = car.popular;
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group";
-                if(car.popular) card.classList.add('border-amber-500/50', 'gold-glow');
-
+                card.className = `bg-stone-900 rounded-xl overflow-hidden border ${isPopular ? 'gold-border gold-glow relative' : 'border-stone-800'} flex flex-col group hover:scale-[1.01] transition-all duration-300`;
+                
                 card.innerHTML = `
-                    <div class="relative overflow-hidden bg-slate-950 aspect-[16/10] flex items-center justify-center">
-                        <img src="${car.image}" alt="${car.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        ${car.popular ? `<span class="absolute top-4 right-4 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md">${t.badgePopular}</span>` : ''}
+                    <div class="relative h-48 bg-stone-950 overflow-hidden">
+                        <img src="${car.img}" alt="${car.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                        ${isPopular ? `<span class="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-[10px] px-2 py-1 rounded shadow-md tracking-wider">${TRANS[currentLang].badge_popular}</span>` : ''}
+                        <span class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-stone-300 text-[11px] px-2 py-0.5 rounded border border-stone-800">${car.type}</span>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-lg font-black text-white group-hover:text-amber-400 transition mb-1">${car.name}</h3>
-                        <p class="text-xs text-slate-400 mb-5">${car.category}</p>
-                        <div class="w-full h-[1px] bg-slate-800 mb-5"></div>
-                        <div class="flex items-baseline gap-1 mb-6 mt-auto">
-                            <span class="text-3xl font-black text-amber-500 tracking-tight">${car.price}</span>
-                            <span class="text-sm font-bold text-slate-300">DH</span>
-                            <span class="text-xs text-slate-500 font-medium">/ ${t.lblDay}</span>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-lg text-white">${car.name}</h3>
+                            <div class="text-right">
+                                <span class="text-xl font-bold text-gold">${car.price}€</span>
+                                <span class="text-[10px] text-stone-500 block -mt-1">/ jour</span>
+                            </div>
                         </div>
-                        <button onclick="openBookingModal(${car.id})" class="w-full bg-slate-800 border border-slate-700/60 hover:bg-amber-500 hover:text-slate-950 text-white font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 active:scale-98 shadow-md">${t.btnBookNow}</button>
+                        <div class="grid grid-cols-3 gap-2 border-t border-b border-stone-800/60 py-3 my-3 text-xs text-stone-400">
+                            <div class="flex items-center gap-1.5"><i class="fas fa-cog text-stone-600"></i> <span>${car.trans === 'Manuelle' ? TRANS[currentLang].spec_manual : TRANS[currentLang].spec_auto}</span></div>
+                            <div class="flex items-center gap-1.5"><i class="fas fa-gas-pump text-stone-600"></i> <span>${car.fuel === 'Diesel' ? TRANS[currentLang].spec_diesel : TRANS[currentLang].spec_essence}</span></div>
+                            <div class="flex items-center gap-1.5"><i class="fas fa-car-side text-stone-600"></i> <span>${car.doors} ${TRANS[currentLang].spec_doors}</span></div>
+                        </div>
+                        <div class="flex flex-col gap-2 mt-auto">
+                            <button onclick="openBookingModal(${car.id})" class="w-full bg-stone-950 hover:bg-gold hover:text-black border border-stone-800 text-stone-200 text-xs font-semibold py-2.5 rounded transition shadow-md">
+                                ${TRANS[currentLang].btn_card_book}
+                            </button>
+                            <button onclick="openVoirToutModal(${car.id})" class="w-full text-center text-stone-400 hover:text-gold text-xs font-medium py-1 underline transition tracking-wider">
+                                ${TRANS[currentLang].btn_card_view_all}
+                            </button>
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function toggleFleetView() {
-            showAllCars = !showAllCars;
-            document.getElementById('btn-toggle-fleet').textContent = showAllCars ? TRANSLATIONS[currentLanguage].btnViewLess : TRANSLATIONS[currentLanguage].btnViewAll;
-            renderFleet();
+        function changeLanguage(lang) {
+            currentLang = lang;
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = lang;
+            }
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (TRANS[lang][key]) {
+                    el.textContent = TRANS[lang][key];
+                }
+            });
+
+            renderCarsGrid();
         }
 
-        function openGuaranteeModal() {
-            const t = TRANSLATIONS[currentLanguage];
-            document.getElementById('modal-g-title').textContent = t.modalGTitle;
-            document.getElementById('modal-g-body').innerHTML = t.modalGBody;
-            
-            const m = document.getElementById('guaranteeModal');
-            m.classList.remove('hidden');
-            m.classList.add('flex');
+        function toggleCustomLocationInput(type) {
+            const select = document.getElementById(`${type}_location`);
+            const customInput = document.getElementById(`custom_${type}`);
+            if (select.value === 'Autre') {
+                customInput.classList.remove('hidden');
+                customInput.required = true;
+            } else {
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            }
         }
 
-        function closeGuaranteeModal() {
-            const m = document.getElementById('guaranteeModal');
-            m.classList.add('hidden');
-            m.classList.remove('flex');
-        }
+        function openBadgeModal() { document.getElementById('badgeModal').classList.remove('hidden'); }
+        function closeBadgeModal() { document.getElementById('badgeModal').classList.add('hidden'); }
 
         function openBookingModal(carId) {
-            selectedCar = CARS.find(c => c.id === carId);
-            if (!selectedCar) return;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
 
-            const t = TRANSLATIONS[currentLanguage];
-            document.getElementById('modal-b-title').textContent = t.modalBTitle;
-            document.getElementById('modal-b-desc').textContent = t.modalBDesc;
-            document.getElementById('modal-b-selected').textContent = t.modalBSelected;
-            document.getElementById('modal-b-btn').textContent = t.modalBBtn;
+            if (!startDate || !endDate) {
+                alert(TRANS[currentLang].msg_alert_dates);
+                document.getElementById('start_date').focus();
+                return;
+            }
+
+            selectedCar = CARS.find(c => c.id === carId);
             
-            document.getElementById('modal-car-name').textContent = selectedCar.name;
+            let pickup = document.getElementById('pickup_location').value;
+            if (pickup === 'Autre') pickup = document.getElementById('custom_pickup').value || 'Adresse personnalisée';
             
-            const m = document.getElementById('bookingModal');
-            m.classList.remove('hidden');
-            m.classList.add('flex');
+            let returnLoc = document.getElementById('return_location').value;
+            if (returnLoc === 'Autre') returnLoc = document.getElementById('custom_return').value || 'Adresse personnalisée';
+
+            document.getElementById('modalCarName').textContent = selectedCar.name;
+            document.getElementById('modalCarPrice').textContent = `${selectedCar.price} € / Jour`;
+            document.getElementById('modalPickupText').textContent = pickup;
+            document.getElementById('modalReturnText').textContent = returnLoc;
+            document.getElementById('modalDatesText').textContent = `${startDate} ➔ ${endDate}`;
+
+            document.getElementById('bookingModal').classList.remove('hidden');
         }
 
         function closeBookingModal() {
-            const m = document.getElementById('bookingModal');
-            m.classList.add('hidden');
-            m.classList.remove('flex');
+            document.getElementById('bookingModal').classList.add('hidden');
+            selectedCar = null;
+        }
+
+        function openVoirToutModal(carId) {
+            const car = CARS.find(c => c.id === carId);
+            if (!car) return;
+
+            document.getElementById('voirToutCarName').textContent = car.name;
+            document.querySelectorAll('#voirToutModal [data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (TRANS[currentLang][key]) {
+                    el.textContent = TRANS[currentLang][key];
+                }
+            });
+
+            document.getElementById('voirToutModal').classList.remove('hidden');
+        }
+
+        function closeVoirToutModal() {
+            document.getElementById('voirToutModal').classList.add('hidden');
         }
 
         function redirectToWhatsAppFinal() {
             if (!selectedCar) return;
 
-            const phone = "212655386956";
+            const phone = "212618369599";
             const startDate = document.getElementById('start_date').value;
             const endDate = document.getElementById('end_date').value;
             
@@ -668,35 +825,20 @@
 
             let text = `Bonjour ECHAPPE CAR, je souhaite effectuer une réservation :\n\n`;
             text += `🚗 Véhicule : *${selectedCar.name}*\n`;
-            text += `📅 Date de Début : ${startDate || 'Non spécifiée'}\n`;
-            text += `📅 Date de Fin : ${endDate || 'Non spécifiée'}\n`;
+            text += `📅 Date de Début : ${startDate}\n`;
+            text += `📅 Date de Fin : ${endDate}\n`;
             text += `📍 Lieu de Prise en charge : ${pickup}\n`;
             text += `📍 Lieu de Restitution : ${returnLoc}\n\n`;
             text += `Merci de me confirmer la disponibilité et le tarif total.`;
 
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+            const encodedText = encodeURIComponent(text);
+            const url = `https://wa.me/${phone}?text=${encodedText}`;
+            
+            window.open(url, '_blank');
             closeBookingModal();
         }
-
-        function scrollToFleet() { document.getElementById('fleet').scrollIntoView({ behavior: 'smooth' }); }
-        function scrollToHow() { document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' }); }
-        function scrollToBooking() { document.getElementById('start_date').scrollIntoView({ behavior: 'smooth' }); }
-
-        window.onclick = function(e) {
-            if (!e.target.closest('#langDropdown')) {
-                document.getElementById('langMenu').classList.add('hidden');
-            }
-            if (e.target === document.getElementById('guaranteeModal')) closeGuaranteeModal();
-            if (e.target === document.getElementById('bookingModal')) closeBookingModal();
-        }
-
-        // Set date constraint to today
-        const todayStr = new Date().toISOString().split('T')[0];
-        document.getElementById('start_date').min = todayStr;
-        document.getElementById('end_date').min = todayStr;
-
-        // Initialize view
-        applyLocalization();
+        
+        function handleBookingForm(e) { e.preventDefault(); }
     </script>
 </body>
 </html>
