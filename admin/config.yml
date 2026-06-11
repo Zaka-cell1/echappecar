@@ -1,0 +1,19 @@
+backend:
+  name: github
+  repo: Zaka-call1/echappecar
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "config"
+    label: "Configuration Générale"
+    files:
+      - file: "index.html"
+        label: "Infos d'agence"
+        name: "infos"
+        fields:
+          - {label: "Téléphone", name: "agency-phone", widget: "string"}
+          - {label: "Email d'agence", name: "agency-email", widget: "string"}
+          - {label: "Adresse physique", name: "agency-address", widget: "string"}
